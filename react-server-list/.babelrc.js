@@ -1,8 +1,8 @@
-const pkg = require('./package.json');
+import fs from 'fs/promises';
 
-module.exports = (api) => {
-  api.cache.never();
+const pkg = JSON.parse(await fs.readFile(new URL('./package.json', import.meta.url)));
 
+export default (api) => {
   const envOptions = {
     modules: false,
     loose: true,
@@ -26,4 +26,4 @@ module.exports = (api) => {
       ['transform-react-remove-prop-types', { mode: 'wrap' }],
     ],
   };
-}
+};

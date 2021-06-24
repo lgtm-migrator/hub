@@ -1,8 +1,9 @@
-import babel from '@rollup/plugin-babel';
+import fs from 'fs/promises';
+import { babel } from '@rollup/plugin-babel';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import css from 'rollup-plugin-css-only';
 
-const pkg = require('./package.json');
+const pkg = JSON.parse(await fs.readFile(new URL('./package.json', import.meta.url)));
 
 const external = Object.keys(pkg.dependencies)
   .concat(Object.keys(pkg.peerDependencies));
@@ -18,11 +19,6 @@ export default {
   input: 'src/index.js',
   output: [{
     file: pkg.main,
-    exports: 'named',
-    format: 'cjs',
-    sourcemap: true,
-  }, {
-    file: pkg.module,
     format: 'es',
     sourcemap: true,
   }],
